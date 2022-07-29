@@ -47,7 +47,7 @@ jobs:
       - run: npm run markdownlint
       - run: npm run test:unit
       - step: E2E Testing
-        uses: actions/checkout@master
+        uses: actions/checkout@3
           with:
             repository: VOICEVOX/voicevox_engine
             path: ./voicevox_engine
