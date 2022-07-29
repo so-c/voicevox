@@ -46,10 +46,10 @@ jobs:
       - run: npm run lint
       - run: npm run markdownlint
       - run: npm run test:unit
-      - step: E2E Testing
+      - name: E2E Testing
         uses: actions/checkout@3
           with:
             repository: VOICEVOX/voicevox_engine
             path: ./voicevox_engine
-        run: npm run test:e2e
+      - run: npm run test:e2e
       - run: npm run electron:build_pnever
