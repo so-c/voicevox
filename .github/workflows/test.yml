@@ -46,12 +46,14 @@ jobs:
       - run: npm run lint
       - run: npm run markdownlint
       - run: npm run test:unit
-      - name: E2E Testing
+      - name: Checkout Engine
         uses: actions/checkout@master
         with:
           repository: VOICEVOX/voicevox_engine
           path: ./voicevox_engine
+      - name: Configure .env
         run: (Get-Content ./.env.production) -replace "run.exe", "./voicevox_engine/run.py" > .env
         shell: pwsh
-      - run: npm run test:e2e
+      - name: End to End Testing
+        run: npm run test:e2e
       - run: npm run electron:build_pnever
