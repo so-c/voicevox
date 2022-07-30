@@ -59,7 +59,7 @@ jobs:
           python-version: ${{ env.PYTHON_VERSION }}
       - name: Install Python dependencies
         shell: bash
-        run: pip install -r requirements.txt -target ./voicevox_engine
+        run: pip install -r ./voicevox_engine/requirements.txt -target ./voicevox_engine
       - name: Configure .env
         run: (Get-Content ./.env.production) -replace "run.exe", "./voicevox_engine/run.py --enable_mock" > .env
         shell: pwsh
