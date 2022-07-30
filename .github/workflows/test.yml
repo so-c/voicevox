@@ -61,12 +61,17 @@ jobs:
       - name: Install Python dependencies
         shell: bash
         run: |
+          echo $PATH
+          cd ./voicevox_engine
           # FIXME: SO-C cannot solve known issue.
           # https://github.com/Nuitka/Nuitka/issues/1406
           python -m pip install --upgrade pip setuptools==60.6.0 wheel
-          pip install -r ./voicevox_engine/requirements.txt -target ./voicevox_engine
+          pip install -r ./voicevox_engine/requirements.txt
       - name: Configure .env
-        run: (Get-Content ./.env.production) -replace "run.exe", "./voicevox_engine/run.py --enable_mock" > .env
+        run: |
+          Set-Location ~
+          Write-Host ${env:PATH}
+          (Get-Content ./.env.production) -replace "run.exe", "./voicevox_engine/run.py --enable_mock" > .env
         shell: pwsh
       - name: End to End Testing
         run: npm run test:e2e
