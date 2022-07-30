@@ -51,5 +51,7 @@ jobs:
         with:
           repository: VOICEVOX/voicevox_engine
           path: ./voicevox_engine
+        run: (Get-Content ./.env.production) -replace "run.exe", "./voicevox_engine/run.py" > .env
+        shell: pwsh
       - run: npm run test:e2e
       - run: npm run electron:build_pnever
