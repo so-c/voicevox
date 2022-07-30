@@ -14,6 +14,7 @@ jobs:
       ELECTRON_CACHE: .cache/electron
       ELECTRON_BUILDER_CACHE: .cache/electron-builder
       cache-version: v2
+      PYTHON_VERSION: "3.8.10"
     steps:
       - uses: actions/checkout@master
       - id: node-version
@@ -46,14 +47,23 @@ jobs:
       - run: npm run lint
       - run: npm run markdownlint
       - run: npm run test:unit
+
       - name: Checkout Engine
         uses: actions/checkout@master
         with:
           repository: VOICEVOX/voicevox_engine
           path: ./voicevox_engine
+      - name: Set up Python ${{ env.PYTHON_VERSION }} for Run Engine
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+      - name: Install Python dependencies
+        shell: bash
+        run: pip install -r requirements.txt -target ./voicevox_engine
       - name: Configure .env
-        run: (Get-Content ./.env.production) -replace "run.exe", "./voicevox_engine/run.py" > .env
+        run: (Get-Content ./.env.production) -replace "run.exe", "./voicevox_engine/run.py --enable_mock" > .env
         shell: pwsh
       - name: End to End Testing
         run: npm run test:e2e
+      
       - run: npm run electron:build_pnever
