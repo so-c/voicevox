@@ -49,26 +49,16 @@ jobs:
       - run: npm run test:unit
 
       - name: Checkout Engine
-        uses: actions/checkout@master
+        uses: dsaltares/fetch-gh-release-asset@master
         with:
-          repository: VOICEVOX/voicevox_engine
-          path: ./voicevox_engine
-      - name: Set up Python ${{ env.PYTHON_VERSION }} for Run Engine
-        uses: actions/setup-python@v4
-        with:
-          python-version: ${{ env.PYTHON_VERSION }}
-          cache: pip
-      - name: Install Python dependencies
-        shell: bash
+            repository: 'VOICEVOX/voicevox_engine'
+            version: 'latest'
+            file: 'windows-cpu.7z.001'
         run: |
-          # FIXME: SO-C cannot solve known issue.
-          # https://github.com/Nuitka/Nuitka/issues/1406
-          python -m pip install --upgrade pip setuptools==60.6.0 wheel
-          pip install -r requirements.txt
-        working-directory: ./voicevox_engine
+          build\7zr.exe x windows-cpu.7z.001
       - name: Configure .env
         run: |
-          (Get-Content ./.env.production) -replace "run.exe", "./voicevox_engine/run.py --enable_mock" > .env
+          (Get-Content ./.env.production) -replace "run.exe", "../../../../windows-cpu/run.exe" > .env
         shell: pwsh
       - name: End to End Testing
         run: npm run test:e2e
