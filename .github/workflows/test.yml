@@ -54,7 +54,7 @@ jobs:
             repository: 'VOICEVOX/voicevox_engine'
             version: 'latest'
             file: 'windows-cpu.7z.001'
-        run: |
+      - run: |
           build\7zr.exe x windows-cpu.7z.001
       - name: Configure .env
         run: |
